@@ -10,7 +10,7 @@ f = inline(func, 'x','y');
 % x_upper = 4;
 % y_lower = 2;
 % y_upper = 9;
-% f = @(x, y) x.^2 - 2*(y.^2);
+% e.g f = @(x, y) x.^2 - 2*(y.^2);
 f = vectorize(f);
 %integrate over region
 %linspace allows for using rectancular domain region
