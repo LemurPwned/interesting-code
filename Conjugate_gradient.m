@@ -11,13 +11,27 @@
 %following this step xk+1 = xk + alpha*pk
 %alpha is [pk'*b/pk'*A*pk]
 %first iteration
-A = [ 3,2; 2,6];
-b = [2; -8];
-x_old = [5; 3];
-% n = 5;
-% A = rand(5)*10;
-% b = rand(2,1);
-% x_old = zeros(n,1);
+A = [ 4,1; 1,3];
+b = [1; 2];
+
+%for plot
+x1 = linspace(-4,6,100);
+x2 = linspace(-6,4,100);
+[x1m, x2m] = meshgrid(x1, x2);
+zm = zeros(100);
+for i = 1:100
+    for j = 1:100
+        x = [x1m(i,j); x2m(i,j)];
+        f = x'*A*x - b'*x;
+        zm(i,j) = f;
+    end
+end
+contourf(x1m, x2m, zm)
+hold on
+%pick a point
+[x1, y1] = ginput(1);
+x_old = [x1; y1];
+
 r_old = b - A*x_old;
 p_old = r_old;
 
@@ -35,6 +49,8 @@ p_old = r_old;
 % % p1 = r1 + beta*p0;
 % % alpha = (r1'*r1)/(p1'*A*p1);
 % % x2 = x1 + alpha*p1;
+% % etc...
+
 
 
 for i = 1:10
@@ -48,29 +64,13 @@ for i = 1:10
     beta = (r_new'*r_new)/(r_old(:,end)'*r_old(:,end));
     p_new = r_new + beta*p_old;
     p_old = p_new;
-%     r_old = r_new;
-%     x_old = x_new;
     r_old = [r_old r_new];
     x_old = [x_old x_new];
-    %alpha = (r_new'*r_new)/(p_new'*A*p_new)
+    
 end
 
-%for plot
-x1 = linspace(-4,6,100);
-x2 = linspace(-6,4,100);
-[x1m, x2m] = meshgrid(x1, x2);
-zm = zeros(100);
-% A = [ 3,2; 2,6];
-% b = [2; -8];
-for i = 1:100
-    for j = 1:100
-        x = [x1m(i,j); x2m(i,j)];
-        f = x'*A*x - b'*x;
-        zm(i,j) = f;
-    end
-end
-contourf(x1m, x2m, zm)
-hold on
+
+
 xx = x_old(1,:);
 yy = x_old(2,:);
 plot(xx, yy ,'r.-')
